@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "public": "public",
+    "site": "into-progressive",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

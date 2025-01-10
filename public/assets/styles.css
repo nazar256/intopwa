@@ -1,0 +1,107 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;  /* Stack children vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 320px;
+    margin-bottom: 20px;  /* Space between container and footer */
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#addIconButton {
+    background-color: #28a745;
+    font-size: 0.9em;
+    padding: 8px 15px;
+    margin: 10px 0;
+}
+
+#addIconButton:hover {
+    background-color: #218838;
+}
+
+.icon-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.icon-field input {
+    margin-bottom: 0;
+    margin-right: 5px;
+}
+
+.removeIcon {
+    background-color: #dc3545;
+    padding: 8px 12px;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+.removeIcon:hover {
+    background-color: #c82333;
+}
+
+#createAppButton {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+#iconFields {
+    margin: 10px 0;
+}
+
+.tech-stack {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.tech-stack p {
+    color: #666;
+    margin: 0;
+}
+
+.tech-stack img {
+    transition: transform 0.2s;
+}
+
+.tech-stack img:hover {
+    transform: scale(1.1);
+}

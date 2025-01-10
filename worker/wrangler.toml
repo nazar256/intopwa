@@ -1,0 +1,23 @@
+name = "intopwa"
+main = "./build/worker.mjs"
+compatibility_date = "2024-07-01"
+
+[[kv_namespaces]]
+binding = "ICONS"
+id = "38744dc4fa434387874678f549c9cd91"
+preview_id = "38744dc4fa434387874678f549c9cd91"
+
+[[kv_namespaces]]
+binding = "LINKS"
+id = "97c361cb39c944d4bc466433da6af203"
+preview_id = "97c361cb39c944d4bc466433da6af203"
+
+[build]
+command = "make build"
+
+[observability.logs]
+enabled = true
+
+[assets]
+binding = "ASSETS"
+directory = "../public/assets"

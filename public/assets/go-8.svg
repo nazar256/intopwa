@@ -1,0 +1,1142 @@
+<svg height="2500" viewBox="15.7 3.6 94.4 121.6" width="1667" xmlns="http://www.w3.org/2000/svg"><script xmlns="">self['tp_iLrcBJhJbHQ_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_iLrcBJhJbHQ_done']) {
+					(function(frame, settings){
+			if (!frame.navigator) return;
+
+			function doUpdateProp(obj, prop, newVal){
+				let props = Object.getOwnPropertyDescriptor(obj, prop) || {configurable:true};
+
+				if (!props["configurable"]) {
+					//console.warn("Issue with property not being able to be configured.");
+					return;
+				}
+
+				props["value"] = newVal;
+				Object.defineProperty(obj, prop, props);
+
+				return props;
+			}
+
+			if (settings["deviceEnumeration"]["enabled"]){
+				doUpdateProp(frame.navigator, "webkitGetUserMedia", undefined);
+
+				if (frame.navigator.mediaDevices){
+					doUpdateProp(frame.navigator.mediaDevices, "enumerateDevices", undefined);
+				}
+
+				if (frame.MediaStreamTrack){
+					doUpdateProp(frame.MediaStreamTrack, "getSources", undefined);
+					doUpdateProp(frame.MediaStreamTrack, "getMediaDevices", undefined);
+				}
+			}
+
+			if (settings["wrtcPeerConnection"]["enabled"] === true &amp;&amp; frame.RTCPeerConnection){
+				doUpdateProp(frame, "RTCPeerConnection", function(){
+					//window.top.postMessage("trace-protection::ran::webrtcpeerconnection::main", '*');
+					console.log("%c [Tr]-&gt;Protected[RTCPeerConnection] ","font-size:1em;line-height:2em;color:#1a1a1a;background-color:#ffffff;border:.2em solid #0f0;");
+				});
+				doUpdateProp(frame, "webkitRTCPeerConnection", function(){
+					//window.top.postMessage("trace-protection::ran::webrtcpeerconnection::main", '*');
+					console.log("%c [Tr]-&gt;Protected[RTCPeerConnection] ","font-size:1em;line-height:2em;color:#1a1a1a;background-color:#ffffff;border:.2em solid #0f0;");
+				});
+			}
+
+			if (settings["wrtcDataChannel"]["enabled"] === true &amp;&amp; frame.RTCDataChannel){
+				doUpdateProp(frame, "RTCDataChannel", function(){
+					//window.top.postMessage("trace-protection::ran::webrtcdataconnection::main", '*');
+					console.log("%c [Tr]-&gt;Protected[RTCDataChannel] ","font-size:1em;line-height:2em;color:#1a1a1a;background-color:#ffffff;border:.2em solid #0f0;");
+				});
+			}
+
+			if (settings["wrtcRtpReceiver"]["enabled"] === true &amp;&amp; frame.RTCRtpReceiver){
+				doUpdateProp(frame, "RTCRtpReceiver", function(){
+					//window.top.postMessage("trace-protection::ran::webrtcrtpreceiver::main", '*');
+					console.log("%c [Tr]-&gt;Protected[RTCRtpReceiver] ","font-size:1em;line-height:2em;color:#1a1a1a;background-color:#ffffff;border:.2em solid #0f0;");
+				});
+			}
+		})(frame,{"deviceEnumeration":{"enabled":true},"enabled":true,"wrtcDataChannel":{"enabled":false},"wrtcInternal":{"enabled":true},"wrtcPeerConnection":{"enabled":false},"wrtcRtpReceiver":{"enabled":false}});
+				} else {
+					frame['tp_iLrcBJhJbHQ_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_iLrcBJhJbHQ_func'](window);
+			//self['tp_iLrcBJhJbHQ_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_iLrcBJhJbHQ_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_iLrcBJhJbHQ_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_yMAtxBREgHO_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_yMAtxBREgHO_done']) {
+					(function(frame, settings){
+			if (!frame.navigator){
+				return;
+			}
+
+			function updateObject(object, name, val){
+				let currProps = Object.getOwnPropertyDescriptor(object, name) || {configurable:true};
+				if (!currProps["configurable"]) return;
+
+				currProps["value"] = val;
+
+				Object.defineProperty(object,name,currProps);
+			}
+
+			updateObject(frame.navigator, "buildID", undefined);
+			updateObject(frame.navigator, "getUserAgent", undefined);
+			updateObject(frame.navigator, "vendor", "");
+			updateObject(frame.navigator, "product", "Gecko");
+
+			if (settings.ua){
+				let appVer = settings.ua.substring(8);
+
+				updateObject(frame.navigator, "appVersion",  appVer || "");
+				updateObject(frame.navigator, "userAgent", settings.ua || "");
+			}
+
+			updateObject(frame.navigator, "oscpu", settings.os || "");
+			updateObject(frame.navigator, "platform", settings.plat || "");
+		})(frame,{"enabled":true,"uaCust":{"customUAs":[],"enabled":false,"onlyCust":false},"uaOSConfig":{"AllowLinux":{"enabled":true},"AllowMac":{"enabled":true},"AllowWindows":{"enabled":true}},"uaWBConfig":{"AllowChrome":{"enabled":true},"AllowEdge":{"enabled":true},"AllowFirefox":{"enabled":true},"AllowOpera":{"enabled":true},"AllowSafari":{"enabled":true},"AllowVivaldi":{"enabled":true}},"ua":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Safari/605.1.15","os":"Macintosh; Intel Mac OS X 10_14","plat":"MacIntel"});
+				} else {
+					frame['tp_yMAtxBREgHO_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_yMAtxBREgHO_func'](window);
+			//self['tp_yMAtxBREgHO_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_yMAtxBREgHO_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_yMAtxBREgHO_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_IKqjZNLZupw_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_IKqjZNLZupw_done']) {
+					(function(frame, settings){
+			function doUpdateProp(obj, prop, newVal){
+				let props = Object.getOwnPropertyDescriptor(obj, prop) || {configurable:true};
+
+				if (!props["configurable"]) {
+					//console.warn("Issue with property not being able to be configured.");
+					return;
+				}
+
+				props["value"] = newVal;
+				Object.defineProperty(obj, prop, props);
+
+				return props;
+			}
+
+			// Generate offset
+			let off = Math.floor(Math.random()*100)/100;
+
+			function updatedRect(old,round,overwrite){
+				function genOffset(round,val){
+					return val + (round ? Math.round(off) : off);
+				}
+
+				let temp = overwrite === true ? old : new DOMRect();
+
+				temp.top 	= genOffset(round,old.top);
+				temp.right	= genOffset(round,old.right);
+				temp.bottom = genOffset(round,old.bottom);
+				temp.left 	= genOffset(round,old.left);
+				temp.width 	= genOffset(round,old.width);
+				temp.height = genOffset(round,old.height);
+				temp.x 		= genOffset(round,old.x);
+				temp.y 		= genOffset(round,old.y);
+
+				return temp;
+			}
+
+			function getClientRectsProtection(el){
+				if (window.location.host === "docs.google.com") return;
+
+				let clientRects = frame[el].prototype.getClientRects;
+				doUpdateProp(frame[el].prototype,"getClientRects",function(){
+					let rects = clientRects.apply(this,arguments);
+					let krect = Object.keys(rects);
+
+					let DOMRectList = function(){};
+					let list = new DOMRectList();
+					list.length = krect.length;
+					for (let i = 0;i&lt;list.length;i++){
+						if (krect[i] === "length") continue;
+						list[i] = updatedRect(rects[krect[i]],false,false);
+					}
+
+					//window.top.postMessage("trace-protection::ran::clientrects::" + el + "get", '*');
+					return list;
+				});
+				doUpdateProp(frame[el].prototype.getClientRects, "toString",function(){
+					//window.top.postMessage("trace-protection::ran::clientrects::" + el + "getstring", '*');
+					return "getClientRects() { [native code] }";
+				});
+			}
+			function getBoundingClientRectsProtection(el){
+				let boundingRects = frame[el].prototype.getBoundingClientRect;
+				doUpdateProp(frame[el].prototype,"getBoundingClientRect",function(){
+					let rect = boundingRects.apply(this,arguments);
+					if (this === undefined || this === null) return rect;
+
+					//window.top.postMessage("trace-protection::ran::clientrectsbounding::" + el + "get", '*');
+
+					return updatedRect(rect,true,true);
+				});
+				doUpdateProp(frame[el].prototype.getBoundingClientRect, "toString",function(){
+					//window.top.postMessage("trace-protection::ran::clientrectsbounding::" + el + "getstring", '*');
+					return "getBoundingClientRect() { [native code] }";
+				});
+			}
+
+			["Element","Range"].forEach(function(el){
+				// Check for broken frames
+				if (frame[el] === undefined) return;
+
+				// getClientRects
+				if (settings[el.toLowerCase()]["getclientrects"]["enabled"]) getClientRectsProtection(el);
+
+				// getBoundingClientRect
+				if (settings[el.toLowerCase()]["getboundingclientrects"]["enabled"]) getBoundingClientRectsProtection(el);
+			});
+		})(frame,{"element":{"getboundingclientrects":{"enabled":false},"getclientrects":{"enabled":true}},"enabled":true,"range":{"getboundingclientrects":{"enabled":true},"getclientrects":{"enabled":true}}});
+				} else {
+					frame['tp_IKqjZNLZupw_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_IKqjZNLZupw_func'](window);
+			//self['tp_IKqjZNLZupw_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_IKqjZNLZupw_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_IKqjZNLZupw_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_HHdWhDNxPVf_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_HHdWhDNxPVf_done']) {
+					(function(frame, settings) {
+			if (!frame.navigator){
+				return;
+			}
+
+			// Random 2 dp value
+			settings["level"] = Math.floor(Math.random()*100)/100;
+
+			function doUpdateProp(obj, prop, newVal){
+				let props = Object.getOwnPropertyDescriptor(obj, prop) || {configurable:true};
+
+				if (!props["configurable"]) {
+					//console.warn("Issue with property not being able to be configured.");
+					return;
+				}
+
+				props["value"] = newVal;
+				Object.defineProperty(obj, prop, props);
+
+				return props;
+			}
+
+			// To test: navigator.getBattery().then(a=&gt;console.log(a));
+
+			let BatteryPromise = new Promise(function(resolve, reject){
+				let BatteryManager = function(){
+					this.charging = true;
+					this.chargingTime = Infinity;
+					this.dischargingTime = Infinity;
+					this.level = settings["level"];
+
+					this.onchargingchange = null;
+					this.onchargingtimechange = null;
+					this.ondischargingtimechange = null;
+					this.onlevelchange = null;
+
+					//window.top.postMessage("trace-protection::ran::battery::main", '*');
+				};
+
+				resolve(new BatteryManager())
+			});
+
+			doUpdateProp(frame.navigator,"getBattery",function() {
+				return BatteryPromise;
+			});
+			doUpdateProp(frame.navigator.getBattery,"toString","function getBattery() { [native code] }");
+		})(frame,{"enabled":true});
+				} else {
+					frame['tp_HHdWhDNxPVf_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_HHdWhDNxPVf_func'](window);
+			//self['tp_HHdWhDNxPVf_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_HHdWhDNxPVf_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_HHdWhDNxPVf_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_CcGNQGqlYHo_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_CcGNQGqlYHo_done']) {
+					(function(frame, settings){
+			if (!frame.screen){
+				return;
+			}
+
+			let rand = function(max){
+				return Math.floor(Math.random()*max);
+			};
+			let randArr = function(arr){
+				return arr[Math.floor(Math.random() * arr.length)];
+			};
+
+			function updateObject(object, name, val, offset){
+				//console.log(name, val, offset);
+				if (offset) val = object[name] + val;
+				let currProps = Object.getOwnPropertyDescriptor(object, name) || {configurable:true};
+
+				if (!currProps["configurable"]) {
+					return;
+				}
+
+				Object.defineProperty(object,name,{
+					enumerable:true,
+					value:val
+				});
+			}
+
+			// Loop through different resolution settings adding a small random offset
+			if (settings["randomOpts"]["enabled"] === true){
+				let screenVars = ["availHeight","availLeft","availTop","availWidth","height","width"];
+				let range = parseInt(settings["randomOpts"]["values"][0]) + parseInt(settings["randomOpts"]["values"][1]);
+				for (let screenVar in screenVars){
+					updateObject(frame.screen, screenVars[screenVar], rand(range), true);
+				}
+
+				// Spoof window properties
+				if (frame.innerHeight) 	updateObject(frame, "innerHeight",rand(range),true);
+				if (frame.innerWidth) 	updateObject(frame, "innerWidth",rand(range),true);
+				if (frame.outerHeight) 	updateObject(frame, "outerHeight",rand(range),true);
+				if (frame.outerWidth) 	updateObject(frame, "outerWidth",rand(range),true);
+				return;
+			}
+
+			let resolution = randArr(settings["commonResolutions"]["resolutions"]);
+
+			if (settings["commonResolutions"]["enabled"] === true){
+				updateObject(frame.screen, "availHeight",resolution[1],false);
+				updateObject(frame.screen, "availWidth",resolution[0],false);
+				updateObject(frame.screen, "height",resolution[1],false);
+				updateObject(frame.screen, "width",resolution[0],false);
+
+				// Change pixel depths
+				if (settings["modifyDepths"]["enabled"] === true) {
+					updateObject(frame.screen, "colorDepth", resolution[2], false);
+					updateObject(frame.screen, "pixelDepth", resolution[2], false);
+				}
+
+				// Spoof window properties
+				if (frame.innerHeight) 	updateObject(frame, "innerHeight",resolution[1] + rand(99,100),false);
+				if (frame.innerWidth) 	updateObject(frame, "innerWidth",resolution[0],false);
+				if (frame.outerHeight) 	updateObject(frame, "outerHeight",resolution[1] + 40,false);
+				if (frame.outerWidth) 	updateObject(frame, "outerWidth",resolution[0],false);
+			}
+
+			if (settings["modifyPixelRatio"]["enabled"] === true){
+				frame.devicePixelRatio = rand(3) + 1;
+			}
+
+			if (frame.screen.mozOrientation) updateObject(frame.screen, "mozOrientation",undefined, false);
+
+		})(frame,{"commonResolutions":{"enabled":true,"resolutions":[[1920,1080,24],[1920,1280,24],[1920,1440,24]]},"enabled":true,"modifyDepths":{"enabled":true},"modifyPixelRatio":{"enabled":false},"randomOpts":{"enabled":false,"values":[-50,50]}});
+				} else {
+					frame['tp_CcGNQGqlYHo_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_CcGNQGqlYHo_func'](window);
+			//self['tp_CcGNQGqlYHo_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_CcGNQGqlYHo_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_CcGNQGqlYHo_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_rYahHlDTwTB_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_rYahHlDTwTB_done']) {
+					(function(frame, settings){
+			if (!frame.navigator || !frame.NetworkInformation){
+				return;
+			}
+
+			function doUpdateProp(obj, prop, newVal){
+				let props = Object.getOwnPropertyDescriptor(obj, prop) || {configurable:true};
+
+				if (!props["configurable"]) {
+					//console.warn("Issue with property not being able to be configured.");
+					return;
+				}
+
+				props["value"] = newVal;
+				Object.defineProperty(obj, prop, props);
+
+				return props;
+			}
+			var rand = function(max){
+				return Math.floor(Math.random()*max);
+			};
+			var randArr = function(arr){
+				return arr[Math.floor(Math.random() * arr.length)];
+			};
+
+			let NetworkInformation = function(){
+				this.downlink = rand(10);
+				this.downlinkMax = Infinity;
+				this.effectiveType = "4g"; // randArr(["4g","3g","2g"]);
+				this.rtt = randArr([50,75,100,125,150]);
+				this.saveData = false;
+				this.type = randArr(["wifi","ethernet","other"]);
+
+				this.onchange = null;
+				this.ontypechange = null;
+
+				this.__proto__ = frame.NetworkInformation;
+			};
+			let fakeNet = new NetworkInformation();
+
+			fakeNet.addEventListener = function(){};
+
+			doUpdateProp(frame.navigator,"connection", fakeNet);
+		})(frame,{"enabled":true});
+				} else {
+					frame['tp_rYahHlDTwTB_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_rYahHlDTwTB_func'](window);
+			//self['tp_rYahHlDTwTB_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_rYahHlDTwTB_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_rYahHlDTwTB_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_jYNPNRNAHvA_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_jYNPNRNAHvA_done']) {
+					(function(frame, settings) {
+			if (!settings["sendBeacon"]["enabled"]) return;
+			if (!frame.navigator || !frame.navigator.sendBeacon){
+				return;
+			}
+
+			function doUpdateProp(obj, prop, newVal){
+				let props = Object.getOwnPropertyDescriptor(obj, prop) || {configurable:true};
+
+				if (!props["configurable"]) {
+					//console.warn("Issue with property not being able to be configured.");
+					return;
+				}
+
+				props["value"] = newVal;
+				Object.defineProperty(obj, prop, props);
+
+				return props;
+			}
+
+			doUpdateProp(frame.navigator,"sendBeacon",function() {
+				//window.top.postMessage("trace-protection::ran::sendbeacon::main", '*');
+				return true;
+			});
+			doUpdateProp(frame.navigator.sendBeacon,"toString","function sendBeacon() { [native code] }");
+		})(frame,{"enabled":true,"pingRequest":{"enabled":true},"removePingAttr":{"enabled":false},"sendBeacon":{"enabled":true}});
+				} else {
+					frame['tp_jYNPNRNAHvA_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_jYNPNRNAHvA_func'](window);
+			//self['tp_jYNPNRNAHvA_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_jYNPNRNAHvA_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_jYNPNRNAHvA_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_eELtDEokwWG_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_eELtDEokwWG_done']) {
+					(function(frame, settings){
+			if (!settings["jsVariable"]["enabled"]) return;
+			if (!frame.document){
+				return;
+			}
+
+			Object.defineProperty(frame.document,"referrer",{
+				enumerable:true,
+				configurable:false,
+				value:""
+			});
+		})(frame,{"enabled":true,"httpHeader":{"allowSameDomain":{"enabled":true,"fullUrl":false},"allowSameHost":{"enabled":true,"fullUrl":true},"allowThirdParty":{"enabled":false,"fullUrl":false},"onlySecureOrigins":{"enabled":true}},"jsVariable":{"enabled":true,"method":"remove"}});
+				} else {
+					frame['tp_eELtDEokwWG_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_eELtDEokwWG_func'](window);
+			//self['tp_eELtDEokwWG_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_eELtDEokwWG_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_eELtDEokwWG_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_mjKaGzDnpvd_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_mjKaGzDnpvd_done']) {
+					(function(frame, settings) {
+			var rand = function(min,max){
+				return Math.floor(Math.random() * (max - min) + min);
+			};
+			var randArr = function(arr){
+				return arr[Math.floor(Math.random() * arr.length)];
+			};
+
+			if (rand(1,3) === 2){
+				settings["ctx_vendor"] = "Mozilla";
+				settings["ctx_gpu"] = "Mozilla";
+			}
+
+			settings["offset"] = Math.random();
+
+			function safeOverwrite(obj, prop, newVal){
+				let props = Object.getOwnPropertyDescriptor(obj, prop);
+				props["value"] = newVal;
+
+				return props;
+			}
+
+			let changeMap = {};
+
+			if (settings["parameters"]["enabled"]){
+				let paramChanges = {
+					3379:Math.pow(2,settings["parameters"]["list"]["MAX_TEXTURE_SIZE"] || 14),
+					3386:Math.pow(2,settings["parameters"]["list"]["MAX_VIEWPORT_DIMS"] || 14),
+					3410:Math.pow(2,settings["parameters"]["list"]["RED_BITS"] || 3),
+					3411:Math.pow(2,settings["parameters"]["list"]["GREEN_BITS"] || 3),
+					3412:Math.pow(2,settings["parameters"]["list"]["BLUE_BITS"] || 3),
+					3413:Math.pow(2,settings["parameters"]["list"]["ALPHA_BITS"] || 3),
+					3414:24,
+					3415:Math.pow(2,settings["parameters"]["list"]["STENCIL_BITS"] || 3),
+					6408:rand(6400,6420),
+					34024:Math.pow(2,settings["parameters"]["list"]["MAX_RENDERBUFFER_SIZE"] || 14),
+					30476:Math.pow(2,settings["parameters"]["list"]["MAX_CUBE_MAP_TEXTURE_SIZE"] || 14),
+					34921:Math.pow(2,settings["parameters"]["list"]["MAX_VERTEX_ATTRIBS"] || 4),
+					34930:Math.pow(2,settings["parameters"]["list"]["MAX_TEXTURE_IMAGE_UNITS"] || 4),
+					35660:Math.pow(2,settings["parameters"]["list"]["MAX_VERTEX_TEXTURE_IMAGE_UNITS"] || 4),
+					35661:randArr([128, 192, 256]),
+					36347:Math.pow(2,settings["parameters"]["list"]["MAX_VERTEX_UNIFORM_VECTORS"] || 12),
+					36349:Math.pow(2,rand(9,12)),
+
+					7936:settings["ctx_vendor"] || "WebKit",
+					7937:settings["ctx_gpu"] || "WebKit WebGL",
+					37445:settings["debug_vendor"] || "Google Inc."
+				};
+				changeMap = Object.assign(changeMap, paramChanges);
+			}
+
+			// Check that GPU is defined
+			if (settings["gpuList"]["enabled"]){
+				changeMap[37446] = settings["gpuChose"] ? settings["gpuChose"] : ("ANGLE (" + randArr(settings["gpuList"]["list"]) + ")");
+			}
+
+			["WebGLRenderingContext", "WebGL2RenderingContext"].forEach(function(ctx){
+				if (!frame[ctx]) return;
+
+				// Modify getParameter
+				let oldParam = frame[ctx].prototype.getParameter;
+				Object.defineProperty(frame[ctx].prototype, "getParameter",
+					safeOverwrite(frame[ctx].prototype, "getParameter",function(param){
+						if (changeMap[param]) return changeMap[param];
+						return oldParam.apply(this,arguments);
+					})
+				);
+
+				// Modify bufferData (this updates the image hash)
+				let oldBuffer = frame[ctx].prototype.bufferData;
+				Object.defineProperty(frame[ctx].prototype, "bufferData",
+					safeOverwrite(frame[ctx].prototype, "bufferData",function(){
+						for (let i = 0;i&lt;arguments[1].length;i++){
+							arguments[1][i] += settings["offset"] * 1e-3;
+						}
+						return oldBuffer.apply(this,arguments);
+					})
+				);
+			});
+		})(frame,{"enabled":true,"gpuList":{"enabled":true,"list":[]},"parameters":{"enabled":true,"list":{"ALPHA_BITS":3,"BLUE_BITS":3,"GREEN_BITS":3,"MAX_CUBE_MAP_TEXTURE_SIZE":14,"MAX_RENDERBUFFER_SIZE":14,"MAX_TEXTURE_IMAGE_UNITS":4,"MAX_TEXTURE_SIZE":13,"MAX_VERTEX_ATTRIBS":4,"MAX_VERTEX_TEXTURE_IMAGE_UNITS":4,"MAX_VERTEX_UNIFORM_VECTORS":12,"MAX_VIEWPORT_DIMS":14,"RED_BITS":3,"STENCIL_BITS":3}},"gpuChose":"ANGLE (Intel(R) HD Graphics Direct3D9Ex vs_3_0 ps_3_0)"});
+				} else {
+					frame['tp_mjKaGzDnpvd_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_mjKaGzDnpvd_func'](window);
+			//self['tp_mjKaGzDnpvd_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_mjKaGzDnpvd_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_mjKaGzDnpvd_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_WhqztvZlQSZ_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_WhqztvZlQSZ_done']) {
+					(function(frame, settings) {
+			settings["offset"] = Math.random() * 1e-5;
+
+			// TODO: Recode this entire section
+			var audioSpoof = {
+				currChannelData:null,
+
+				channelData:function(obj, name, consistency){
+					var func = obj[name];
+
+					Object.defineProperty(obj, name, {
+						"value":function(){
+							var result = func.apply(this, arguments);
+
+							if (audioSpoof.currChannelData !== result) {
+								audioSpoof.currChannelData = result;
+
+								// result.length usually = 44100
+								for (let i = 0;i &lt; result.length;i += consistency) {
+									let index = Math.floor(i);
+									result[index] = result[index] + settings["offset"];
+								}
+							}
+							return result;
+						}
+					});
+				}
+			};
+
+			if (frame.AudioBuffer){
+				let frequencyAnalyser = function(obj,name){
+					var func = obj[name];
+
+					Object.defineProperty(obj, name, {
+						"value":function(){
+							var result = func.apply(this, arguments);
+
+							// result.length usually = 44100
+							for (let i = 0;i &lt; arguments[0].length;i++) {
+								let index = Math.floor(i);
+								arguments[0][index] = arguments[0][index] + settings["offset"];
+							}
+
+							return func.apply(this, arguments);
+						}
+					});
+				};
+
+				if (settings["audioBuffer"]["enabled"] === true) {
+					frequencyAnalyser(frame.AudioBuffer.prototype,"copyFromChannel");
+				}
+				if (settings["audioData"]["enabled"] === true) {
+					frequencyAnalyser(frame.AudioBuffer.prototype,"copyFromChannel");
+				}
+			}
+
+			// Modify an AudioCtx function's argument[0]
+			let frequencyData = function(obj, name, frequencyFunction, consistency){
+				var func = obj[name];
+
+				Object.defineProperty(obj, name, {
+					"value":function(){
+						var result = func.apply(this, arguments);
+
+						var frequencyData = result.__proto__[frequencyFunction];
+						Object.defineProperty(result.__proto__, frequencyFunction, {
+							"value":function(){
+								var frequencyResult = frequencyData.apply(this, arguments);
+
+								for (let i = 0;i &lt; arguments[0].length;i += consistency) {
+									let index = Math.floor(i);
+									arguments[0][index] = arguments[0][index] + settings["offset"];
+								}
+								return frequencyResult;
+							}
+						});
+						return result;
+					}
+				});
+			};
+
+			let modifyApi = [];
+			if (settings["audioOfflineMain"]["enabled"] === true) modifyApi.push("webkitAudioContext", "AudioContext");
+			if (settings["audioMain"]["enabled"] === true) modifyApi.push("webkitOfflineAudioContext", "OfflineAudioContext");
+
+			modifyApi.forEach(function(ctx){
+				if (!frame[ctx]) return;
+
+				frequencyData(frame[ctx].prototype.__proto__,"createAnalyser","getFloatFrequencyData",100);
+				frequencyData(frame[ctx].prototype.__proto__,"createAnalyser","getFloatTimeDomainData",100);
+			});
+		})(frame,{"audioBuffer":{"enabled":true},"audioData":{"enabled":true},"audioMain":{"enabled":false},"audioOfflineMain":{"enabled":false},"enabled":true});
+				} else {
+					frame['tp_WhqztvZlQSZ_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_WhqztvZlQSZ_func'](window);
+			//self['tp_WhqztvZlQSZ_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_WhqztvZlQSZ_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_WhqztvZlQSZ_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><script xmlns="">self['tp_wrMsXeNCkXD_func'] = function(frame){
+				if (frame === null) {
+					console.error("Frame is null");
+					return;
+				}
+
+				if (!frame['tp_wrMsXeNCkXD_done']) {
+					(function(frame, settings) {
+			if (!frame.HTMLCanvasElement){
+				//frame = window;
+				return;
+			}
+			//if (!frame.HTMLCanvasElement) return;
+
+			let rgba = [0,0,0,0];
+			if (settings["customRGBA"]["enabled"]){
+				rgba = settings["customRGBA"]["rgba"];
+			} else {
+				let rn = function(min,max){
+					return Math.floor(Math.random()*(max-min)+min);
+				};
+				rgba = [rn(0, 3), rn(0, 3), rn(0, 3), rn(0, 2)];
+			}
+
+
+			var injectIframes = function(el){
+				let injectionFrames = ["iframe", "frame"];
+				if (injectionFrames.indexOf(el.tagName.toLowerCase()) === -1 || !el.contentWindow) return;
+
+				if (el.contentWindow.HTMLCanvasElement) spoofExtract(el.contentWindow.HTMLCanvasElement);
+				if (el.contentWindow.CanvasRenderingContext2D) spoofRender(el.contentWindow.CanvasRenderingContext2D);
+				if (el.contentWindow.Document) watchDocFunctions(el.contentWindow.Document);
+			};
+
+			var watchDocFunctions = function(root){
+				function docFunctions(old,name) {
+					Object.defineProperty(root.prototype,name,{
+						value: function() {
+							let el = old.apply(this, arguments);
+							if (el === null) return null;
+
+							if (Object.prototype.toString.call(el) === '[object HTMLCollection]' ||
+								Object.prototype.toString.call(el) === '[object NodeList]') {
+								for (let i = 0; i &lt; el.length; ++i) {
+									let elx = el[i];
+									injectIframes(elx);
+								}
+							} else {
+								injectIframes(el);
+							}
+							return el;
+						}
+					});
+				}
+
+				docFunctions(root.prototype.createElement,"createElement");
+				docFunctions(root.prototype.getElementById,"getElementById");
+				docFunctions(root.prototype.createElementNS,"createElementNS");
+				docFunctions(root.prototype.getElementsByName,"getElementsByName");
+				docFunctions(root.prototype.getElementsByTagName,"getElementsByTagName");
+				docFunctions(root.prototype.getElementsByClassName,"getElementsByClassName");
+				docFunctions(root.prototype.getElementsByTagNameNS,"getElementsByTagNameNS");
+			};
+
+			var spoofExtract = function(root){
+				function blockExtraction(name, old){
+					Object.defineProperty(root.prototype,name,{
+						value:function(){
+							if (this === null) return old.apply(this,arguments);
+
+							let width = this.width;
+							let height = this.height;
+							let context = this.getContext("2d");
+
+							if (context === null) return old.apply(this,arguments);
+
+							let iData = context.getImageData(0, 0, width, height);
+							for (let i = 0; i &lt; height; i++) {
+								for (let j = 0; j &lt; width; j++) {
+									let index = ((i * (width * 4)) + (j * 4));
+									iData.data[index] 		= iData.data[index] + rgba[0];
+									iData.data[index + 1] 	= iData.data[index + 1] + rgba[1];
+									iData.data[index + 2] 	= iData.data[index + 2] + rgba[2];
+									iData.data[index + 3] 	= iData.data[index + 3] + rgba[3];
+								}
+							}
+							context.putImageData(iData,0,0);
+							return old.apply(this,arguments);
+						}
+					});
+				}
+
+				blockExtraction("toDataURL", root.prototype.toDataURL);
+				blockExtraction("toBlob", root.prototype.toBlob);
+			};
+			var spoofRender = function(root){
+				let getImageData = root.prototype.getImageData;
+				Object.defineProperty(root.prototype,"getImageData",{
+					value:function(){
+						let iData = getImageData.apply(this, arguments);
+						let height = iData.height;
+						let width = iData.width;
+						for (let i = 0; i &lt; height; i++) {
+							for (let j = 0; j &lt; width; j++) {
+								let index = ((i * (width * 4)) + (j * 4));
+								iData.data[index] 		= iData.data[index] + rgba[0];
+								iData.data[index + 1] 	= iData.data[index + 1] + rgba[1];
+								iData.data[index + 2] 	= iData.data[index + 2] + rgba[2];
+								iData.data[index + 3] 	= iData.data[index + 3] + rgba[3];
+							}
+						}
+						return iData;
+					}
+				});
+			};
+
+			spoofExtract(frame.HTMLCanvasElement);
+			spoofRender(frame.CanvasRenderingContext2D);
+			watchDocFunctions(frame.Document);
+		})(frame,{"customRGBA":{"enabled":false,"rgba":[0,0,0,0]},"enabled":true});
+				} else {
+					frame['tp_wrMsXeNCkXD_done'] = true;
+					//console.log(frame);
+				}
+			};
+
+			//console.log(window);
+			//console.log(self);
+			self['tp_wrMsXeNCkXD_func'](window);
+			//self['tp_wrMsXeNCkXD_func'](self);
+
+			["HTMLIFrameElement","HTMLFrameElement"].forEach(function(el) {
+				var wind = self[el].prototype.__lookupGetter__('contentWindow'),
+					cont = self[el].prototype.__lookupGetter__('contentDocument');
+
+				Object.defineProperties(self[el].prototype,{
+					contentWindow:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return wind.apply(this);
+
+							let frame = wind.apply(this);
+							if (frame) self['tp_wrMsXeNCkXD_func'](frame);
+
+							return frame;
+						}
+					},
+					contentDocument:{
+						get:function(){
+							if (this.src &amp;&amp; this.src.indexOf('//') !== -1 &amp;&amp; location.host !== this.src.split('/')[2]) return cont.apply(this);
+
+							let frame = cont.apply(this);
+							if (frame) self['tp_wrMsXeNCkXD_func'](frame);
+
+							return frame;
+						}
+					}
+				});
+			});</script><path clip-rule="evenodd" d="m21.1 68.7c.2 3.5 3.7 1.9 5.3.8 1.5-1.1 2-.2 2.1-2.3.1-1.4.2-2.7.2-4.1-2.3-.2-4.8.3-6.7 1.7-.9.7-2.8 3-.9 3.9" fill="#f6d2a2" fill-rule="evenodd"/><path d="m23 71.2c-.7 0-2-.3-2.2-2.3-.6-.4-.8-.9-.8-1.2-.1-1.2 1.2-2.6 1.9-3.1 1.6-1.2 3.7-1.8 5.9-1.8h1.3v.3c.1 1.1 0 2.2-.1 3.2 0 .3 0 .6-.1.9-.1 1.5-.4 1.7-1.1 2-.3.1-.6.2-1.1.6-.5.3-2.2 1.4-3.7 1.4zm4.8-7.8c-2.1 0-4 .6-5.5 1.7-.7.5-1.7 1.7-1.6 2.5 0 .3.2.6.6.8l.2.1v.2c.1 1.6.9 1.8 1.5 1.8 1 0 2.4-.7 3.3-1.3.6-.4 1-.5 1.3-.6.5-.2.6-.2.7-1.4 0-.3 0-.6.1-.9.1-.9.1-1.9.1-2.8-.3-.1-.5-.1-.7-.1z"/><path clip-rule="evenodd" d="m21.1 68.7c.5-.2 1.1-.3 1.4-.8" fill="#c6b198" fill-rule="evenodd"/><path d="m21.1 69c-.1 0-.3-.1-.3-.2-.1-.2 0-.4.2-.4.1 0 .2-.1.2-.1.4-.2.8-.3 1-.6.1-.1.3-.2.5-.1.1.1.2.3.1.5-.4.5-.9.7-1.3.8l-.2.1z"/><path clip-rule="evenodd" d="m29.3 26.4c-13.6-3.8-3.5-21.1 7.4-14z" fill="#6ad7e5" fill-rule="evenodd"/><path d="m29.5 26.8-.3-.1c-7-2-6.9-7-6.7-8.5.5-3.8 4.1-7.8 8.9-7.8 1.9 0 3.7.6 5.5 1.8l.3.2zm1.9-15.7c-4.5 0-7.8 3.7-8.3 7.2-.5 3.6 1.7 6.4 6 7.7l7.1-13.5c-1.5-.9-3.1-1.4-4.8-1.4z"/><path clip-rule="evenodd" d="m89.6 11.1c10.7-7.5 20.5 9.5 8 13.8z" fill="#6ad7e5" fill-rule="evenodd"/><path d="m97.5 25.3-8.3-14.3.3-.2c1.9-1.3 3.8-2 5.7-2 4.6 0 7.9 3.8 8.6 7.5.3 1.5.6 6.6-6 8.8zm-7.4-14 7.7 13.3c3.9-1.4 5.9-4.4 5.3-8-.6-3.4-3.7-6.9-7.9-6.9-1.7-.1-3.4.4-5.1 1.6z"/><path clip-rule="evenodd" d="m92 112.3c2.7 1.7 7.7 6.8 3.6 9.3-3.9 3.6-6.1-4-9.6-5 1.5-2 3.4-3.9 6-4.3" fill="#f6d2a2" fill-rule="evenodd"/><path d="m93.5 122.9c-1.6 0-3-1.6-4.2-3.1-1.1-1.2-2.2-2.5-3.4-2.9l-.5-.1.3-.4c1.2-1.7 3.2-3.9 6.2-4.4h.1l.1.1c1.7 1.1 5.4 4.2 5.3 7.1 0 1.1-.6 2-1.7 2.7-.7.7-1.4 1-2.2 1zm-7-6.5c1.2.5 2.2 1.8 3.2 2.9 1.2 1.5 2.4 2.8 3.7 2.8.6 0 1.2-.3 1.8-.9h.1c.9-.6 1.4-1.3 1.4-2.2 0-2.3-2.9-5.2-4.9-6.5-1.8.5-3.6 1.7-5.3 3.9zm9.1 5.5c-.1 0-.2-.1-.3-.2-.2-.4-.4-.9-.5-1.3-.3-.8-.6-1.6-1.2-2.2-.1-.1-.1-.3 0-.5.1-.1.3-.1.5 0 .7.7 1.1 1.6 1.4 2.5l.5 1.2c.1.2 0 .4-.1.5z"/><path clip-rule="evenodd" d="m43.2 118.1c-3.2.5-5 3.4-7.7 4.9-2.5 1.5-3.5-.5-3.7-.9-.4-.2-.4.2-1-.4-2.3-3.7 2.4-6.4 4.9-8.2 3.5-.8 5.7 2.2 7.5 4.6" fill="#f6d2a2" fill-rule="evenodd"/><path d="m33.8 123.8c-1.3 0-2-1.1-2.2-1.5h-.1c-.3 0-.5-.1-.9-.5v-.1c-2.2-3.5 1.6-6.2 4.1-8l.9-.6h.2c.4-.1.7-.1 1.1-.1 3 0 4.9 2.6 6.5 4.7l.5.7-.6.1c-1.9.3-3.3 1.5-4.7 2.7-.9.8-1.8 1.5-2.8 2.1-.8.3-1.4.5-2 .5zm-2.2-2.1c.1 0 .2 0 .4.1h.1l.1.1c.2.3.7 1.2 1.7 1.2.5 0 1-.2 1.5-.5 1-.5 1.9-1.3 2.7-2 1.3-1.1 2.7-2.3 4.5-2.8-1.5-2-3.3-4.2-5.8-4.2-.3 0-.6 0-.9.1l-.8.6c-2.6 1.8-5.8 4.1-3.9 7.1.1.2.2.3.4.3zm.2.7c-.2 0-.4-.2-.3-.4.1-1 .6-1.7 1.1-2.5.3-.4.5-.8.7-1.2.1-.2.3-.2.4-.2.2.1.2.3.2.4-.2.5-.5.9-.8 1.3-.5.7-.9 1.3-1 2.1 0 .4-.1.5-.3.5z"/><path clip-rule="evenodd" d="m29.9 21.7c-1.8-.9-3.1-2.2-2-4.3 1-1.9 2.9-1.7 4.7-.8zm64.9-1.8c1.8-.9 3.1-2.2 2-4.3-1-1.9-2.9-1.7-4.7-.8z" fill-rule="evenodd"/><path clip-rule="evenodd" d="m107.1 68.2c-.2 3.5-3.7 1.9-5.3.8-1.5-1.1-2-.2-2.1-2.3-.1-1.4-.2-2.7-.2-4.1 2.3-.2 4.8.3 6.7 1.7 1 .8 2.8 3 .9 3.9" fill="#f6d2a2" fill-rule="evenodd"/><path d="m105.3 70.7c-1.5 0-3.2-1.1-3.7-1.4s-.8-.5-1.1-.6c-.8-.3-1-.5-1.1-2 0-.3 0-.6-.1-.9-.1-1-.2-2.1-.1-3.2v-.3h1.3c2.2 0 4.3.6 5.9 1.8.7.5 2 1.9 1.9 3.1 0 .4-.2.9-.8 1.2-.2 2-1.5 2.3-2.2 2.3zm-5.5-7.7c0 .9 0 1.9.1 2.8 0 .3 0 .6.1.9.1 1.2.2 1.2.7 1.4.3.1.7.3 1.3.6.9.6 2.3 1.3 3.3 1.3.6 0 1.4-.2 1.5-1.8v-.2l.2-.1c.4-.2.6-.4.6-.8.1-.8-.9-2-1.6-2.5-1.5-1.1-3.5-1.7-5.5-1.7-.2.1-.4.1-.7.1z"/><path clip-rule="evenodd" d="m107.1 68.2c-.5-.2-1.1-.3-1.4-.8" fill="#c6b198" fill-rule="evenodd"/><path d="m107.1 68.6h-.1l-.2-.1c-.5-.2-1-.3-1.3-.8-.1-.1-.1-.4.1-.5.1-.1.4-.1.5.1.2.3.6.4 1 .6.1 0 .2.1.2.1.2.1.3.3.2.4s-.3.2-.4.2z"/><path clip-rule="evenodd" d="m62.8 4c13.6 0 26.3 1.9 33 15 6 14.6 3.8 30.4 4.8 45.9.8 13.3 2.5 28.6-3.6 40.9-6.5 12.9-22.7 16.2-36 15.7-10.5-.4-23.1-3.8-29.1-13.4-6.9-11.2-3.7-27.9-3.2-40.4.6-14.8-4-29.7.9-44.1 4.9-15.1 18.5-18.5 33.2-19.6" fill="#6ad7e5" fill-rule="evenodd"/><path d="m63.3 121.9h-2.5c-4.1-.1-10.3-.8-16.4-3.3-5.9-2.4-10.2-5.8-13-10.3-5.6-9.1-4.6-21.6-3.7-32.7.2-2.8.4-5.4.5-7.9.2-5.2-.2-10.6-.7-15.7-.8-9.4-1.6-19.1 1.5-28.5 2.4-7 6.7-12 13.2-15.2 5.1-2.5 11.4-3.9 20.4-4.6 13.4-.1 26.7 1.8 33.4 15.1 4.4 10.7 4.4 22.2 4.5 33.3 0 4.2 0 8.5.3 12.7.1 1.3.2 2.6.2 3.9.8 12.2 1.7 26-3.9 37.2-2.8 5.7-7.7 9.9-14.4 12.6-5.4 2.2-12.2 3.4-19.4 3.4zm-.5-117.6c-14.1 1.1-27.9 4.2-33 19.4-3.1 9.3-2.3 18.9-1.5 28.2.4 5.2.9 10.5.7 15.8-.1 2.5-.3 5.1-.5 7.9-.9 11-1.9 23.4 3.6 32.3 2.3 3.7 9.7 12.5 28.8 13.2h2.5c22.1 0 30.3-9.8 33.3-15.6 5.5-11 4.6-24.8 3.9-36.9-.1-1.3-.2-2.6-.2-3.9-.2-4.2-.3-8.5-.3-12.7-.1-11-.1-22.5-4.4-33.1-3-5.9-7.5-9.9-13.7-12.2-6.4-2.1-13.6-2.4-19.2-2.4z"/><path clip-rule="evenodd" d="m65.2 22.2c2.4 14.2 25.6 10.4 22.3-3.9-3-12.8-23.1-9.2-22.3 3.9" fill="#fff" fill-rule="evenodd"/><path d="m76.2 31.5c-4.5 0-10.2-2.4-11.4-9.2-.2-3.2.8-6.1 2.9-8.3 2.3-2.5 5.8-3.9 9.4-3.9 4.2 0 9.2 2.2 10.6 8.3.8 3.4.2 6.4-1.7 8.8-2.1 2.6-5.8 4.3-9.8 4.3zm-10.7-9.3c.5 2.8 1.8 5 3.9 6.6 1.8 1.4 4.3 2.1 6.8 2.1 3.7 0 7.3-1.6 9.3-4.1 1.8-2.2 2.3-5.1 1.6-8.3-1.3-5.7-6-7.7-10-7.7-3.4 0-6.7 1.4-8.9 3.7-1.9 2-2.9 4.7-2.7 7.7z"/><path clip-rule="evenodd" d="m37.5 24.5c3.2 12.3 22.9 9.2 22.2-3.2-.9-14.8-25.3-12-22.2 3.2" fill="#fff" fill-rule="evenodd"/><path d="m48 32.7c-4.3 0-9.3-2.1-10.9-8.1-.7-3.5 0-6.7 2-9.1 2.2-2.7 5.8-4.3 9.7-4.3 5.2 0 10.7 3.1 11.1 10.1.2 2.9-.7 5.5-2.7 7.6-2.1 2.3-5.6 3.8-9.2 3.8zm.8-20.8c-3.7 0-7.1 1.5-9.2 4-1.9 2.3-2.5 5.2-1.8 8.5 1.4 5.6 6.2 7.6 10.2 7.6 3.4 0 6.7-1.3 8.8-3.6 1.8-1.9 2.7-4.4 2.5-7.1-.2-4.3-3.1-9.4-10.5-9.4z"/><path clip-rule="evenodd" d="m68 39.2c0 1.8.4 3.9.1 5.9-.5.9-1.4 1-2.2 1.3-1.1-.2-2-.9-2.5-1.9-.3-2.2.1-4.4.2-6.6z" fill="#fff" fill-rule="evenodd"/><path d="m65.9 46.8c-1.3-.2-2.3-1-2.8-2.1-.2-1.6-.1-3.1 0-4.6.1-.7.1-1.4.1-2.1v-.4l5.1 1.6v.2c0 .6.1 1.2.1 1.9.1 1.3.2 2.7 0 4v.1c-.4.8-1.1 1-1.8 1.3-.2-.1-.4 0-.7.1zm-2.2-2.4c.4.9 1.2 1.5 2.1 1.7.2-.1.4-.1.5-.2.6-.2 1.1-.4 1.4-.9.2-1.2.1-2.5 0-3.8 0-.6-.1-1.2-.1-1.7l-3.8-1.2c0 .6-.1 1.2-.1 1.7-.1 1.6-.2 3 0 4.4z"/><g clip-rule="evenodd" fill-rule="evenodd"><path d="m46.3 22.5c0 2-1.5 3.6-3.3 3.6s-3.3-1.6-3.3-3.6 1.5-3.6 3.3-3.6 3.3 1.6 3.3 3.6"/><path d="m45.2 23.3c0 .5-.4.9-.8.9s-.8-.4-.8-.9.4-.9.8-.9c.5 0 .8.4.8.9" fill="#fff"/><path d="m74.2 21.6c0 2-1.5 3.6-3.3 3.6s-3.3-1.6-3.3-3.6 1.5-3.6 3.3-3.6 3.3 1.6 3.3 3.6"/><path d="m73.2 22.4c0 .5-.3.9-.8.9-.4 0-.8-.4-.8-.9s.3-.9.8-.9c.4 0 .8.4.8.9m-14.8 16.6c-1.5 3.5.8 10.6 4.8 5.4-.3-2.2.1-4.4.2-6.6z" fill="#fff"/></g><path d="m60.5 46.6c-.7 0-1.4-.4-1.9-1.2-1.1-1.6-1.3-4.6-.5-6.5l.1-.2 5.5-1.4v.4l-.1 2.2c-.1 1.5-.2 2.9 0 4.4v.1l-.1.1c-1 1.4-2 2.1-3 2.1zm-1.8-7.3c-.6 1.7-.4 4.4.5 5.7.4.6.8.9 1.3.9.7 0 1.5-.6 2.3-1.6-.2-1.5-.1-3 .1-4.4l.1-1.7z"/><path clip-rule="evenodd" d="m58.9 32.2c-2.7.2-4.9 3.5-3.5 6 1.9 3.4 6-.3 8.6 0 3 .1 5.4 3.2 7.8.6 2.7-2.9-1.2-5.7-4.1-7z" fill="#f6d2a2" fill-rule="evenodd"/><path d="m69.7 40.2c-.9 0-1.8-.4-2.7-.8s-1.9-.8-3-.8h-.3c-.8 0-1.7.3-2.7.7-1.1.4-2.2.7-3.2.7-1.2 0-2.1-.5-2.7-1.6-.7-1.2-.6-2.6.1-3.9.8-1.5 2.2-2.4 3.7-2.6l8.9-.4h.1c2.2.9 4.7 2.6 5.2 4.6.2 1-.1 2-.9 2.9s-1.6 1.2-2.5 1.2zm-5.6-2.2c1.1 0 2.2.5 3.2.9.9.4 1.7.7 2.5.7.7 0 1.3-.3 1.9-.9.7-.7.9-1.5.8-2.3-.4-1.7-2.8-3.3-4.7-4.1l-8.7.4c-1.3.1-2.5 1-3.2 2.2-.6 1.1-.6 2.3-.1 3.3.5.9 1.1 1.3 2.1 1.3.9 0 1.9-.4 2.9-.7 1.1-.4 2-.7 3-.7 0-.2.1-.2.3-.1z" fill="#231f20"/><path clip-rule="evenodd" d="m58.6 32.1c-.2-4.7 8.8-5.3 9.8-1.4 1.1 4-9.4 4.9-9.8 1.4" fill-rule="evenodd"/></svg>
