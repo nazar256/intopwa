@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"slices"
+	"strings"
 )
 
 //go:generate go run github.com/vektra/mockery/v2@v2.43.2 --dir=. --name kv --output ./mocks --outpkg mocks --case underscore  --with-expecter --exported
@@ -82,5 +83,5 @@ func (c *cache) StoreIconURLs(u *url.URL, iconsURLs []*url.URL) error {
 }
 
 func keyFromURl(u *url.URL) string {
-	return u.Hostname() + u.Path
+	return u.Hostname() + strings.TrimSuffix(u.Path, "/")
 }

@@ -1,3 +1,6 @@
+//go:build cloudflare
+// +build cloudflare
+
 package main
 
 import (

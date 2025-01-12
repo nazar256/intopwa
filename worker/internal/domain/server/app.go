@@ -54,6 +54,9 @@ func (s *server) handleApp(w http.ResponseWriter, req *http.Request) {
 				return
 			}
 			for _, iconURLStr := range req.Form["icons[]"] {
+				if !strings.HasPrefix(iconURLStr, "http://") && !strings.HasPrefix(iconURLStr, "https://") {
+					iconURLStr = "https://" + iconURLStr
+				}
 				iconURL, err := url.Parse(iconURLStr)
 				if err != nil {
 					slog.Error("failed to parse icon URL", "err", err)
@@ -65,7 +68,6 @@ func (s *server) handleApp(w http.ResponseWriter, req *http.Request) {
 		s.handleAppRoot(ctx, w, appU, iconURLs)
 	}
 }
-
 func parseAppURL(u *url.URL) (*appURL, error) {
 	urlPath := u.Path
 

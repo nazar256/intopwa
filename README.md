@@ -2,6 +2,8 @@
 
 Turn any website into an installable Progressive Web App (PWA) with just one click.
 
+> **Note**: This project is a prototype/proof-of-concept implementation focused on demonstrating functionality rather than production-ready code quality.
+
 ## Features
 
 - Create PWAs from any website URL
@@ -66,7 +68,6 @@ make deploy
   * Firebase Hosting
   * Cloudflare Workers
   * Cloudflare KV Storage
-  * Cloudflare R2 Storage
 
 ## License
   MIT License

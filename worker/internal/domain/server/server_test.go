@@ -49,6 +49,15 @@ func TestServer(t *testing.T) {
 	}
 	customIconsBody := []byte(values.Encode())
 
+	udemyIconURLs := []string{
+		"https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/udemy.svg",
+	}
+	udemyIconValues := url.Values{}
+	for _, iconUrl := range udemyIconURLs {
+		udemyIconValues.Add("icons[]", iconUrl)
+	}
+	udemyIconsBody := []byte(udemyIconValues.Encode())
+
 	tests := map[string]struct {
 		uri              string
 		postBody         []byte
@@ -151,7 +160,6 @@ func TestServer(t *testing.T) {
 			uri:           "/a/store.epicgames.com/ru/free-games",
 			postBody:      customIconsBody,
 			expectedTitle: "App for store.epicgames.com",
-			//expectedTitle: "Получайте бесплатную игру каждую неделю | Epic Games Store",
 			expectedManifest: PwaManifest{
 				Name: "store.epicgames.com/ru/free-games",
 				Icons: []PwaIcon{
@@ -164,6 +172,21 @@ func TestServer(t *testing.T) {
 						Src:   "/i/static-assets-prod.epicgames.com/epic-store/static/favicon.ico",
 						Type:  "image/vnd.microsoft.icon",
 						Sizes: "48x48",
+					},
+				},
+			},
+		},
+		"Udemy custom icon": {
+			uri:           "/a/www.udemy.com/",
+			postBody:      udemyIconsBody,
+			expectedTitle: "App for www.udemy.com",
+			expectedManifest: PwaManifest{
+				Name: "www.udemy.com",
+				Icons: []PwaIcon{
+					{
+						Src:   "/i/raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/udemy.svg",
+						Type:  "image/svg+xml",
+						Sizes: "512x512",
 					},
 				},
 			},
