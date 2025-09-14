@@ -83,5 +83,9 @@ func (c *cache) StoreIconURLs(u *url.URL, iconsURLs []*url.URL) error {
 }
 
 func keyFromURl(u *url.URL) string {
-	return u.Hostname() + strings.TrimSuffix(u.Path, "/")
+	key := u.Hostname() + strings.TrimSuffix(u.Path, "/")
+	if u.RawQuery != "" {
+		key += "?" + u.RawQuery
+	}
+	return key
 }

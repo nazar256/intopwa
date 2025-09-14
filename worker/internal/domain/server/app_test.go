@@ -27,6 +27,12 @@ func TestParseAppURL(t *testing.T) {
 			err:      nil,
 		},
 		{
+			name:     "URL with query",
+			input:    "https://example.com/a/google.com/some/path?foo=bar",
+			expected: &appURL{URL: url.URL{Scheme: "https", Host: "google.com", Path: "/some/path", RawQuery: "foo=bar"}},
+			err:      nil,
+		},
+		{
 			name:     "Invalid URL",
 			input:    "https://example.com/google.com",
 			expected: nil,
