@@ -21,13 +21,25 @@ func (u *appURL) appPath() string {
 }
 
 func (u *appURL) redirectPagePath() string {
-	return u.appPath() + redirectPagePath
+	path := u.appPath() + redirectPagePath
+	if u.RawQuery != "" {
+		path += "?" + u.RawQuery
+	}
+	return path
 }
 
 func (u *appURL) manifestPath() string {
-	return u.appPath() + manifestPath
+	path := u.appPath() + manifestPath
+	if u.RawQuery != "" {
+		path += "?" + u.RawQuery
+	}
+	return path
 }
 
 func (u *appURL) serviceWorkerPath() string {
-	return u.appPath() + serviceWorkerPath
+	path := u.appPath() + serviceWorkerPath
+	if u.RawQuery != "" {
+		path += "?" + u.RawQuery
+	}
+	return path
 }
