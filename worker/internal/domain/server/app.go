@@ -88,10 +88,15 @@ func parseAppURL(u *url.URL) (*appURL, error) {
 		appURLValue = strings.TrimSuffix(appURLValue, suffix)
 	}
 
-	u, err := url.Parse("https://" + appURLValue)
+	base := "https://" + appURLValue
+	if u.RawQuery != "" {
+		base += "?" + u.RawQuery
+	}
+
+	parsedURL, err := url.Parse(base)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse app URL: %w", err)
 	}
 
-	return &appURL{URL: *u}, nil
+	return &appURL{URL: *parsedURL}, nil
 }
