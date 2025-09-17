@@ -6,6 +6,7 @@ on:
 
 jobs:
   deploy:
+    if: ${{ secrets.FIREBASE_TOKEN != '' || secrets.FIREBASE_SERVICE_ACCOUNT != '' || secrets.GCP_SA_KEY != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,3 +18,9 @@ jobs:
       - run: npx firebase deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+  skip-deploy:
+    if: ${{ secrets.FIREBASE_TOKEN == '' && secrets.FIREBASE_SERVICE_ACCOUNT == '' && secrets.GCP_SA_KEY == '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip Firebase Hosting deploy
+        run: echo "Skipping Firebase Hosting deployment because no authentication secrets are configured."
