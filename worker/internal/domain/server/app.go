@@ -88,6 +88,18 @@ func parseAppURL(u *url.URL) (*appURL, error) {
 		appURLValue = strings.TrimSuffix(appURLValue, suffix)
 	}
 
+	hostPart, remainder, hasRemainder := strings.Cut(appURLValue, "/")
+
+	decodedHost, err := url.PathUnescape(hostPart)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode app host: %w", err)
+	}
+
+	appURLValue = decodedHost
+	if hasRemainder {
+		appURLValue += "/" + remainder
+	}
+
 	base := "https://" + appURLValue
 	if u.RawQuery != "" {
 		base += "?" + u.RawQuery
