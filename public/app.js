@@ -15,8 +15,11 @@ document.getElementById('createAppButton').addEventListener('click', function() 
             // Parse the URL
             var url = new URL(urlInput);
 
-            // Extract the domain and path
+            // Extract the domain, port, and path
             var domain = url.hostname; // domain (e.g., google.com)
+            if (url.port) {
+                domain += ':' + url.port;
+            }
             var path = url.pathname + url.search + url.hash; // path including query and hash
 
             // Construct the redirection URL

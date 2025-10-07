@@ -33,6 +33,18 @@ func TestParseAppURL(t *testing.T) {
 			err:      nil,
 		},
 		{
+			name:     "URL with port",
+			input:    "https://example.com/a/google.com:8080/some/path",
+			expected: &appURL{URL: url.URL{Scheme: "https", Host: "google.com:8080", Path: "/some/path"}},
+			err:      nil,
+		},
+		{
+			name:     "Encoded URL with port",
+			input:    "https://example.com/a/google.com%3A8080/some/path?foo=bar",
+			expected: &appURL{URL: url.URL{Scheme: "https", Host: "google.com:8080", Path: "/some/path", RawQuery: "foo=bar"}},
+			err:      nil,
+		},
+		{
 			name:     "Invalid URL",
 			input:    "https://example.com/google.com",
 			expected: nil,
