@@ -173,6 +173,9 @@ func (f *iconsScraper) downloadIcon(ctx context.Context, iconURL *url.URL) (icon
 		return icon, fmt.Errorf("failed to create request: %w", err)
 	}
 
+	req.Header.Set("User-Agent", mobileUserAgent)
+	req.Header.Set("Accept", "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8")
+
 	resp, err := f.client.Do(req)
 	if err != nil {
 		return icon, fmt.Errorf("failed to fetch icon: %w", err)
