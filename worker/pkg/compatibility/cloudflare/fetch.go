@@ -31,6 +31,12 @@ func (f *fetcher) Do(req *http.Request) (resp *http.Response, err error) {
 		return nil, fmt.Errorf("failed to convert request: %w", err)
 	}
 
+	for key, values := range req.Header {
+		for _, value := range values {
+			cfReq.Header.Add(key, value)
+		}
+	}
+
 	resp, err = f.client.Do(cfReq, &fetch.RequestInit{
 		CF:       &fetch.RequestInitCF{},
 		Redirect: fetch.RedirectModeFollow,

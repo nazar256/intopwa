@@ -58,6 +58,15 @@ func TestServer(t *testing.T) {
 	}
 	udemyIconsBody := []byte(udemyIconValues.Encode())
 
+	shazamIconURLs := []string{
+		"https://cdn-icons-png.flaticon.com/256/732/732242.png",
+	}
+	shazamIconValues := url.Values{}
+	for _, iconUrl := range shazamIconURLs {
+		shazamIconValues.Add("icons[]", iconUrl)
+	}
+	shazamIconsBody := []byte(shazamIconValues.Encode())
+
 	tests := map[string]struct {
 		uri              string
 		postBody         []byte
@@ -186,6 +195,26 @@ func TestServer(t *testing.T) {
 					{
 						Src:   "/i/raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/udemy.svg",
 						Type:  "image/svg+xml",
+						Sizes: "512x512",
+					},
+				},
+			},
+		},
+		"Shazam custom icon": {
+			uri:           "/a/www.shazam.com/",
+			postBody:      shazamIconsBody,
+			expectedTitle: "App for www.shazam.com",
+			expectedManifest: PwaManifest{
+				Name: "www.shazam.com",
+				Icons: []PwaIcon{
+					{
+						Src:   "/i/cdn-icons-png.flaticon.com/256/732/732242.png",
+						Type:  "image/png",
+						Sizes: "256x256",
+					},
+					{
+						Src:   "/i/cdn-icons-png.flaticon.com/256/732/732242.png",
+						Type:  "image/png",
 						Sizes: "512x512",
 					},
 				},
