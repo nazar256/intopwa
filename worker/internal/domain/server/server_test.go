@@ -40,7 +40,7 @@ type PwaIcon struct {
 func TestServer(t *testing.T) {
 	iconUrls := []string{
 		"https://static-assets-prod.epicgames.com/epic-store/static/favicon.ico",
-		"https://icon-icons.com/downloadimage.php?id=145306&root=2389/PNG/512/&file=epic_games_logo_icon_145306.png",
+		"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/epicgames.svg",
 	}
 
 	values := url.Values{}
@@ -66,6 +66,15 @@ func TestServer(t *testing.T) {
 		shazamIconValues.Add("icons[]", iconUrl)
 	}
 	shazamIconsBody := []byte(shazamIconValues.Encode())
+
+	chatgptIconURLs := []string{
+		"https://pngimg.com/d/chatgpt_PNG14.png",
+	}
+	chatgptIconValues := url.Values{}
+	for _, iconUrl := range chatgptIconURLs {
+		chatgptIconValues.Add("icons[]", iconUrl)
+	}
+	chatgptIconsBody := []byte(chatgptIconValues.Encode())
 
 	tests := map[string]struct {
 		uri              string
@@ -173,8 +182,13 @@ func TestServer(t *testing.T) {
 				Name: "store.epicgames.com/ru/free-games",
 				Icons: []PwaIcon{
 					{
-						Src:   "/i/icon-icons.com/downloadimage.php?id=145306&root=2389/PNG/512/&file=epic_games_logo_icon_145306.png",
-						Type:  "image/png",
+						Src:   "/i/raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/epicgames.svg",
+						Type:  "image/svg+xml",
+						Sizes: "24x24",
+					},
+					{
+						Src:   "/i/raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/epicgames.svg",
+						Type:  "image/svg+xml",
 						Sizes: "512x512",
 					},
 					{
@@ -214,6 +228,21 @@ func TestServer(t *testing.T) {
 					},
 					{
 						Src:   "/i/cdn-icons-png.flaticon.com/256/732/732242.png",
+						Type:  "image/png",
+						Sizes: "512x512",
+					},
+				},
+			},
+		},
+		"ChatGPT custom icon": {
+			uri:           "/a/chatgpt.com/",
+			postBody:      chatgptIconsBody,
+			expectedTitle: "App for chatgpt.com",
+			expectedManifest: PwaManifest{
+				Name: "chatgpt.com",
+				Icons: []PwaIcon{
+					{
+						Src:   "/i/pngimg.com/d/chatgpt_PNG14.png",
 						Type:  "image/png",
 						Sizes: "512x512",
 					},
