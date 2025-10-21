@@ -32,13 +32,34 @@ func TestGetIconURLsUsesQueryInKey(t *testing.T) {
 	}
 }
 
-func TestStoreIconURLsPrependsNewIcons(t *testing.T) {
+func TestStoreIconURLsFiltersNilAndDuplicates(t *testing.T) {
+	u, _ := url.Parse("https://chatgpt.com/")
+
+	kv := newMemKV()
+	cache := NewCache(kv)
+
+	icon1, _ := url.Parse("https://static.chatgpt.com/icon.png")
+	icon2, _ := url.Parse("https://static.chatgpt.com/icon.svg")
+
+	err := cache.StoreIconURLs(u, []*url.URL{icon1, nil, icon1, icon2})
+	require.NoError(t, err)
+
+	urls, found, err := cache.GetIconURLs(u)
+	require.NoError(t, err)
+	require.True(t, found)
+
+	if assert.Len(t, urls, 2) {
+		assert.Equal(t, "https://static.chatgpt.com/icon.png", urls[0].String())
+		assert.Equal(t, "https://static.chatgpt.com/icon.svg", urls[1].String())
+	}
+}
+
+func TestStoreIconURLsReplacesExistingIcons(t *testing.T) {
 	u, _ := url.Parse("https://chatgpt.com/")
 
 	kv := newMemKV()
 	existing := []string{
-		"https://cdn-icons-png.flaticon.com/256/732/732242.png",
-		"https://pngimg.com/d/chatgpt_PNG14.png",
+		"https://default.cdn.com/icon.png",
 	}
 
 	existingJSON, err := json.Marshal(existing)
@@ -48,18 +69,16 @@ func TestStoreIconURLsPrependsNewIcons(t *testing.T) {
 
 	cache := NewCache(kv)
 
-	newIconURL, _ := url.Parse("https://static.chatgpt.com/icon.png")
-	err = cache.StoreIconURLs(u, []*url.URL{newIconURL})
+	customIcon, _ := url.Parse("https://static.chatgpt.com/custom.png")
+	err = cache.StoreIconURLs(u, []*url.URL{customIcon})
 	require.NoError(t, err)
 
 	urls, found, err := cache.GetIconURLs(u)
 	require.NoError(t, err)
 	require.True(t, found)
 
-	if assert.Len(t, urls, 3) {
-		assert.Equal(t, "https://static.chatgpt.com/icon.png", urls[0].String())
-		assert.Equal(t, "https://cdn-icons-png.flaticon.com/256/732/732242.png", urls[1].String())
-		assert.Equal(t, "https://pngimg.com/d/chatgpt_PNG14.png", urls[2].String())
+	if assert.Len(t, urls, 1) {
+		assert.Equal(t, "https://static.chatgpt.com/custom.png", urls[0].String())
 	}
 }
 

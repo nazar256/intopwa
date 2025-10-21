@@ -53,27 +53,22 @@ func (c *cache) GetIconURLs(u *url.URL) (urls []*url.URL, found bool, err error)
 }
 
 func (c *cache) StoreIconURLs(u *url.URL, iconsURLs []*url.URL) error {
-	urls, _, err := c.GetIconURLs(u)
-	if err != nil {
-		return fmt.Errorf("failed to read icons list before merge: %w", err)
+	var (
+		urls []*url.URL
+		err  error
+	)
+
+	if len(iconsURLs) == 0 {
+		urls, _, err = c.GetIconURLs(u)
+		if err != nil {
+			return fmt.Errorf("failed to read icons list before merge: %w", err)
+		}
+	} else {
+		urls = iconsURLs
 	}
 
-	merged := make([]*url.URL, 0, len(iconsURLs)+len(urls))
-	seen := make(map[string]struct{}, len(iconsURLs)+len(urls))
-
-	for _, iu := range iconsURLs {
-		if iu == nil {
-			continue
-		}
-
-		urlStr := iu.String()
-		if _, ok := seen[urlStr]; ok {
-			continue
-		}
-
-		merged = append(merged, iu)
-		seen[urlStr] = struct{}{}
-	}
+	filtered := make([]*url.URL, 0, len(urls))
+	seen := make(map[string]struct{}, len(urls))
 
 	for _, iu := range urls {
 		if iu == nil {
@@ -85,12 +80,12 @@ func (c *cache) StoreIconURLs(u *url.URL, iconsURLs []*url.URL) error {
 			continue
 		}
 
-		merged = append(merged, iu)
+		filtered = append(filtered, iu)
 		seen[urlStr] = struct{}{}
 	}
 
-	urlStrs := make([]string, 0, len(merged))
-	for _, iu := range merged {
+	urlStrs := make([]string, 0, len(filtered))
+	for _, iu := range filtered {
 		urlStrs = append(urlStrs, iu.String())
 	}
 
