@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"slices"
 	"strings"
 )
 
@@ -59,15 +58,41 @@ func (c *cache) StoreIconURLs(u *url.URL, iconsURLs []*url.URL) error {
 		return fmt.Errorf("failed to read icons list before merge: %w", err)
 	}
 
-	urls = append(urls, iconsURLs...)
+	merged := make([]*url.URL, 0, len(iconsURLs)+len(urls))
+	seen := make(map[string]struct{}, len(iconsURLs)+len(urls))
 
-	urlStrs := make([]string, 0, len(urls))
-	for _, iu := range urls {
-		urlStrs = append(urlStrs, iu.String())
+	for _, iu := range iconsURLs {
+		if iu == nil {
+			continue
+		}
+
+		urlStr := iu.String()
+		if _, ok := seen[urlStr]; ok {
+			continue
+		}
+
+		merged = append(merged, iu)
+		seen[urlStr] = struct{}{}
 	}
 
-	slices.Sort(urlStrs)
-	urlStrs = slices.Compact(urlStrs)
+	for _, iu := range urls {
+		if iu == nil {
+			continue
+		}
+
+		urlStr := iu.String()
+		if _, ok := seen[urlStr]; ok {
+			continue
+		}
+
+		merged = append(merged, iu)
+		seen[urlStr] = struct{}{}
+	}
+
+	urlStrs := make([]string, 0, len(merged))
+	for _, iu := range merged {
+		urlStrs = append(urlStrs, iu.String())
+	}
 
 	jsonValue, err := json.Marshal(urlStrs)
 	if err != nil {
