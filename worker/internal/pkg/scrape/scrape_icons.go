@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	mobileUserAgent = "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/W.X.Y.Z Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+	mobileUserAgent = "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36"
 )
 
 type httpClient interface {
@@ -186,18 +186,28 @@ func (f *iconsScraper) downloadIcon(ctx context.Context, iconURL *url.URL) (icon
 		return icon, fmt.Errorf("failed to fetch icon, status: %d", resp.StatusCode)
 	}
 
-	if !strings.HasPrefix(resp.Header.Get("Content-Type"), "image/") {
-		return icon, fmt.Errorf("invalid icon content type: %s", resp.Header.Get("Content-Type"))
-	}
-
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return icon, fmt.Errorf("failed to read icon body: %w", err)
 	}
 
+	contentType := resp.Header.Get("Content-Type")
+	if !strings.HasPrefix(contentType, "image/") {
+		detectedContentType := http.DetectContentType(body)
+		if strings.HasPrefix(detectedContentType, "image/") {
+			contentType = detectedContentType
+		} else {
+			return icon, fmt.Errorf(
+				"invalid icon content type: %s (detected: %s)",
+				contentType,
+				detectedContentType,
+			)
+		}
+	}
+
 	icon.Body = body
 
-	props, err := decodeImgProps(body, resp.Header.Get("Content-Type"))
+	props, err := decodeImgProps(body, contentType)
 	if err != nil {
 		return icon, fmt.Errorf("failed to decode image props: %w", err)
 	}
