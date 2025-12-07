@@ -207,13 +207,13 @@ func manifestVersion(icons []pwaIcon) string {
 	copy(sorted, icons)
 
 	slices.SortFunc(sorted, func(a, b pwaIcon) int {
-		if a.Src != b.Src {
-			return strings.Compare(a.Src, b.Src)
+		if c := cmp.Compare(a.Src, b.Src); c != 0 {
+			return c
 		}
-		if a.Type != b.Type {
-			return strings.Compare(a.Type, b.Type)
+		if c := cmp.Compare(a.Type, b.Type); c != 0 {
+			return c
 		}
-		return strings.Compare(a.Sizes, b.Sizes)
+		return cmp.Compare(a.Sizes, b.Sizes)
 	})
 
 	hasher := sha256.New()
