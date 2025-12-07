@@ -33,6 +33,12 @@ func TestParseAppURL(t *testing.T) {
 			err:      nil,
 		},
 		{
+			name:     "Version param is ignored",
+			input:    "https://example.com/a/google.com/manifest.json?v=123",
+			expected: &appURL{URL: url.URL{Scheme: "https", Host: "google.com", Path: ""}},
+			err:      nil,
+		},
+		{
 			name:     "Invalid URL",
 			input:    "https://example.com/google.com",
 			expected: nil,
