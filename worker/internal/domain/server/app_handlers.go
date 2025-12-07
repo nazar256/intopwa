@@ -1,12 +1,18 @@
 package server
 
 import (
+	"cmp"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/nazar256/intopwa/internal/domain"
 	"log/slog"
 	"net/http"
 	"net/url"
+	"slices"
+	"strings"
 )
 
 type pwaManifest struct {
@@ -31,45 +37,48 @@ func (s *server) handleAppRoot(ctx context.Context, w http.ResponseWriter, u *ap
 		slog.Error("failed to cache icons", "err", err)
 	}
 
+	manifest, version := s.buildManifest(ctx, u)
+	manifestHref := manifestURL(u.manifestPath(), version)
+
 	w.Header().Set("Content-Type", "text/html")
 
 	infoPage := fmt.Sprintf(`
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 
-		<meta name="theme-color" content="#317EFB"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>%s</title>
-		<link rel="manifest" href="%s">
-		<link rel="apple-touch-icon" href="icons/icon-192x192.png">
-		<link rel="icon" type="image/x-icon" href="/favicon.ico">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    	<link rel="stylesheet" href="/styles.css">
-		<script>
-			if ('serviceWorker' in navigator) {
-				navigator.serviceWorker.register('%s')
-					.then(function(registration) {
-						console.log('Service Worker registered with scope:', registration.scope);
-					}).catch(function(error) {
-					console.log('Service Worker registration failed:', error);
-				});
-			}
-		</script>
-	</head>
-	<body>
-		<div class="container">
-			<h2>Install this app</h2>
-			<h3>Mobile:</h3>
-			<p>Tap the browser menu (⋮) and select 'Add to Home Screen' or 'Install App'</p>
-			<h3>Desktop:</h3>
-			<p>Click the install icon (⇩) in your browser's address bar</p>
-		</div>
-	</body>
-	</html>
-`, "App for "+u.URL.Hostname(), u.manifestPath(), u.serviceWorkerPath())
+<meta name="theme-color" content="#317EFB"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>%s</title>
+<link rel="manifest" href="%s">
+<link rel="apple-touch-icon" href="%s">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="stylesheet" href="/styles.css">
+<script>
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('%s')
+.then(function(registration) {
+console.log('Service Worker registered with scope:', registration.scope);
+}).catch(function(error) {
+console.log('Service Worker registration failed:', error);
+});
+}
+</script>
+</head>
+<body>
+<div class="container">
+<h2>Install this app</h2>
+<h3>Mobile:</h3>
+<p>Tap the browser menu (⋮) and select 'Add to Home Screen' or 'Install App'</p>
+<h3>Desktop:</h3>
+<p>Click the install icon (⇩) in your browser's address bar</p>
+</div>
+</body>
+</html>
+`, "App for "+u.URL.Hostname(), manifestHref, manifest.Icons[0].Src, u.serviceWorkerPath())
 
 	_, err = fmt.Fprintln(w, infoPage)
 	if err != nil {
@@ -78,31 +87,14 @@ func (s *server) handleAppRoot(ctx context.Context, w http.ResponseWriter, u *ap
 }
 
 func (s *server) handleManifest(ctx context.Context, w http.ResponseWriter, appURL *appURL) {
-	title := fmt.Sprintf(appURL.URL.Hostname() + appURL.URL.Path)
-
-	icons := s.iconsFetcher.FetchIcons(ctx, &appURL.URL)
-
-	var pwaIcons []pwaIcon
-	for _, icon := range icons {
-		pwaIcons = append(pwaIcons, pwaIcon{
-			Src:   icon.Path(),
-			Type:  icon.Props.MimeType,
-			Sizes: icon.Props.Size.String(),
-		})
-	}
-	pwaIcons = ensureAnyIcon(pwaIcons)
-
-	manifest := pwaManifest{
-		Name:            title,
-		ShortName:       title,
-		Icons:           pwaIcons,
-		StartURL:        appURL.redirectPagePath(),
-		BackgroundColor: "#3367D6",
-		ThemeColor:      "#3367D6",
-		Display:         "standalone",
-	}
+	manifest, version := s.buildManifest(ctx, appURL)
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
+	w.Header().Set("ETag", "\""+version+"\"")
+
 	err := json.NewEncoder(w).Encode(manifest)
 	if err != nil {
 		slog.Error("failed to write manifest response", "err", err)
@@ -152,4 +144,84 @@ func ensureAnyIcon(icons []pwaIcon) []pwaIcon {
 		Type:  "image/png",
 		Sizes: "512x512",
 	})
+}
+
+func (s *server) buildManifest(ctx context.Context, appURL *appURL) (pwaManifest, string) {
+	title := fmt.Sprintf(appURL.URL.Hostname() + appURL.URL.Path)
+
+	icons := s.iconsFetcher.FetchIcons(ctx, &appURL.URL)
+
+	slices.SortFunc(icons, func(a, b domain.Icon) int {
+		sizeA := a.Props.Size.Width * a.Props.Size.Height
+		sizeB := b.Props.Size.Width * b.Props.Size.Height
+		if c := cmp.Compare(sizeB, sizeA); c != 0 {
+			return c
+		}
+		return strings.Compare(a.URL.String(), b.URL.String())
+	})
+
+	var pwaIcons []pwaIcon
+	for _, icon := range icons {
+		pwaIcons = append(pwaIcons, pwaIcon{
+			Src:   icon.Path(),
+			Type:  icon.Props.MimeType,
+			Sizes: icon.Props.Size.String(),
+		})
+	}
+
+	if len(pwaIcons) == 0 {
+		slog.Info("no icons found for app, using default icon", "host", appURL.URL.Hostname())
+	}
+
+	pwaIcons = ensureAnyIcon(pwaIcons)
+	version := manifestVersion(pwaIcons)
+
+	manifest := pwaManifest{
+		Name:            title,
+		ShortName:       title,
+		Icons:           pwaIcons,
+		StartURL:        appURL.redirectPagePath(),
+		BackgroundColor: "#3367D6",
+		ThemeColor:      "#3367D6",
+		Display:         "standalone",
+	}
+
+	return manifest, version
+}
+
+func manifestURL(manifestPath string, version string) string {
+	if version == "" {
+		return manifestPath
+	}
+
+	separator := "?"
+	if strings.Contains(manifestPath, "?") {
+		separator = "&"
+	}
+
+	return manifestPath + separator + "v=" + url.QueryEscape(version)
+}
+
+func manifestVersion(icons []pwaIcon) string {
+	sorted := make([]pwaIcon, len(icons))
+	copy(sorted, icons)
+
+	slices.SortFunc(sorted, func(a, b pwaIcon) int {
+		if c := cmp.Compare(a.Src, b.Src); c != 0 {
+			return c
+		}
+		if c := cmp.Compare(a.Type, b.Type); c != 0 {
+			return c
+		}
+		return cmp.Compare(a.Sizes, b.Sizes)
+	})
+
+	hasher := sha256.New()
+	for _, icon := range sorted {
+		hasher.Write([]byte(icon.Src))
+		hasher.Write([]byte(icon.Type))
+		hasher.Write([]byte(icon.Sizes))
+	}
+
+	return hex.EncodeToString(hasher.Sum(nil))
 }

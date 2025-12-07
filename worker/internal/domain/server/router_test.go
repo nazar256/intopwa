@@ -27,13 +27,16 @@ func TestRouter(t *testing.T) {
 			expectedContentType: "text/html",
 			expectedSubstrings: []string{
 				"<title>App for google.com</title>",
-				"/a/google.com/some/path/manifest.json",
+				"/a/google.com/some/path/manifest.json?v=",
 				"/a/google.com/some/path/service-worker.js",
+				"/default-app-icon.png",
 			},
 			initMocks: func(fetcher *mocks.IconsFetcher) {
 				u, _ := url.Parse("https://google.com/some/path/")
 				var iconURLs []*url.URL
 				fetcher.EXPECT().CacheIcons(mock.Anything, u, iconURLs).
+					Return(nil).Once()
+				fetcher.EXPECT().FetchIcons(mock.Anything, u).
 					Return(nil).Once()
 			},
 		},

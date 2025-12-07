@@ -26,6 +26,7 @@ func (s *server) handleIcon(w http.ResponseWriter, req *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", icon.Props.MimeType)
+	w.Header().Set("Cache-Control", "public, max-age=86400")
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write(icon.Body)
 	if err != nil {
