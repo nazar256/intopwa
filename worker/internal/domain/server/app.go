@@ -89,8 +89,12 @@ func parseAppURL(u *url.URL) (*appURL, error) {
 	}
 
 	base := "https://" + appURLValue
+
 	query := u.Query()
-	query.Del("v")
+	if strings.HasSuffix(urlPath, manifestPath) {
+		query.Del("v")
+	}
+
 	if encoded := query.Encode(); encoded != "" {
 		base += "?" + encoded
 	}
