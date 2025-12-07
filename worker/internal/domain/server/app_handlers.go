@@ -1,11 +1,13 @@
 package server
 
 import (
+	"cmp"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/nazar256/intopwa/internal/domain"
 	"log/slog"
 	"net/http"
 	"net/url"
@@ -148,6 +150,15 @@ func (s *server) buildManifest(ctx context.Context, appURL *appURL) (pwaManifest
 	title := fmt.Sprintf(appURL.URL.Hostname() + appURL.URL.Path)
 
 	icons := s.iconsFetcher.FetchIcons(ctx, &appURL.URL)
+
+	slices.SortFunc(icons, func(a, b domain.Icon) int {
+		sizeA := a.Props.Size.Width * a.Props.Size.Height
+		sizeB := b.Props.Size.Width * b.Props.Size.Height
+		if c := cmp.Compare(sizeB, sizeA); c != 0 {
+			return c
+		}
+		return strings.Compare(a.URL.String(), b.URL.String())
+	})
 
 	var pwaIcons []pwaIcon
 	for _, icon := range icons {
