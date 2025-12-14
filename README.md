@@ -13,6 +13,7 @@ Turn any website into an installable Progressive Web App (PWA) with just one cli
 ## Live Demo
 
 Visit [into-progressive.web.app](https://into-progressive.web.app) to try it out.
+Production backend API is available at https://intopwa.xyofn8h7t.workers.dev/.
 
 ## Development
 

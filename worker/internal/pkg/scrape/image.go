@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/biessek/golang-ico"
+	_ "golang.org/x/image/webp"
 	_ "image/png"
 )
 

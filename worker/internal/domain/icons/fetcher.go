@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/nazar256/intopwa/internal/domain"
 	"log/slog"
+	"net/http"
 	"net/url"
 	"slices"
 	"strings"
@@ -147,13 +148,18 @@ func ensureBigIcon(icons []domain.Icon) []domain.Icon {
 		return icons
 	}
 
-	if containsMinSizeIcon(icons, 512, 512) {
-		return icons
+	normalized := make([]domain.Icon, 0, len(icons))
+	for _, icon := range icons {
+		normalized = append(normalized, normalizeIcon(icon))
 	}
 
-	resizingCandidate := pickResizingCandidate(icons)
+	if containsExactSizeIcon(normalized, 512, 512) {
+		return normalized
+	}
 
-	return append(icons, domain.Icon{
+	resizingCandidate := normalizeIcon(pickResizingCandidate(normalized))
+
+	return append(normalized, domain.Icon{
 		URL:  resizingCandidate.URL,
 		Body: resizingCandidate.Body,
 		Props: domain.ImageProps{
@@ -166,9 +172,16 @@ func ensureBigIcon(icons []domain.Icon) []domain.Icon {
 	})
 }
 
-func containsMinSizeIcon(icons []domain.Icon, width, height int) bool {
+func normalizeIcon(icon domain.Icon) domain.Icon {
+	if icon.Props.MimeType == "" && len(icon.Body) > 0 {
+		icon.Props.MimeType = http.DetectContentType(icon.Body)
+	}
+	return icon
+}
+
+func containsExactSizeIcon(icons []domain.Icon, width, height int) bool {
 	for _, icon := range icons {
-		if icon.Props.Size.Width >= width && icon.Props.Size.Height >= height {
+		if icon.Props.Size.Width == width && icon.Props.Size.Height == height {
 			return true
 		}
 	}
