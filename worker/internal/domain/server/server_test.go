@@ -76,6 +76,24 @@ func TestServer(t *testing.T) {
 	}
 	chatgptIconsBody := []byte(chatgptIconValues.Encode())
 
+	pixabayIconURLs := []string{
+		"https://cdn.pixabay.com/photo/2023/05/08/00/43/chatgpt-7977357_1280.png",
+	}
+	pixabayIconValues := url.Values{}
+	for _, iconUrl := range pixabayIconURLs {
+		pixabayIconValues.Add("icons[]", iconUrl)
+	}
+	pixabayIconsBody := []byte(pixabayIconValues.Encode())
+
+	seekLogoIconURLs := []string{
+		"https://images.seeklogo.com/logo-png/46/1/chatgpt-logo-png_seeklogo-465219.png",
+	}
+	seekLogoIconValues := url.Values{}
+	for _, iconUrl := range seekLogoIconURLs {
+		seekLogoIconValues.Add("icons[]", iconUrl)
+	}
+	seekLogoIconsBody := []byte(seekLogoIconValues.Encode())
+
 	tests := map[string]struct {
 		uri              string
 		postBody         []byte
@@ -243,6 +261,46 @@ func TestServer(t *testing.T) {
 				Icons: []PwaIcon{
 					{
 						Src:   "/i/pngimg.com/d/chatgpt_PNG14.png",
+						Type:  "image/png",
+						Sizes: "512x512",
+					},
+				},
+			},
+		},
+		"ChatGPT pixabay icon": {
+			uri:           "/a/chatgpt.com/",
+			postBody:      pixabayIconsBody,
+			expectedTitle: "App for chatgpt.com",
+			expectedManifest: PwaManifest{
+				Name: "chatgpt.com",
+				Icons: []PwaIcon{
+					{
+						Src:   "/i/cdn.pixabay.com/photo/2023/05/08/00/43/chatgpt-7977357_1280.png",
+						Type:  "image/png",
+						Sizes: "1279x1280",
+					},
+					{
+						Src:   "/i/cdn.pixabay.com/photo/2023/05/08/00/43/chatgpt-7977357_1280.png",
+						Type:  "image/png",
+						Sizes: "512x512",
+					},
+				},
+			},
+		},
+		"ChatGPT seeklogo icon": {
+			uri:           "/a/chatgpt.com/",
+			postBody:      seekLogoIconsBody,
+			expectedTitle: "App for chatgpt.com",
+			expectedManifest: PwaManifest{
+				Name: "chatgpt.com",
+				Icons: []PwaIcon{
+					{
+						Src:   "/i/images.seeklogo.com/logo-png/46/1/chatgpt-logo-png_seeklogo-465219.png",
+						Type:  "image/png",
+						Sizes: "600x600",
+					},
+					{
+						Src:   "/i/images.seeklogo.com/logo-png/46/1/chatgpt-logo-png_seeklogo-465219.png",
 						Type:  "image/png",
 						Sizes: "512x512",
 					},
