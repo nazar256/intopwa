@@ -69,6 +69,22 @@ func (f *fetcher) CacheIcons(ctx context.Context, pageURL *url.URL, iconURLs []*
 	return nil
 }
 
+func (f *fetcher) StoreUploadedIcon(_ context.Context, pageURL *url.URL, icon domain.Icon) error {
+	if icon.URL == nil {
+		return fmt.Errorf("uploaded icon URL is nil")
+	}
+
+	if err := f.iconsCache.Store([]domain.Icon{icon}); err != nil {
+		return fmt.Errorf("failed to store uploaded icon: %w", err)
+	}
+
+	if err := f.linksCache.StoreIconURLs(pageURL, []*url.URL{icon.URL}); err != nil {
+		return fmt.Errorf("failed to store uploaded icon reference: %w", err)
+	}
+
+	return nil
+}
+
 func (f *fetcher) FetchIcons(ctx context.Context, u *url.URL) []domain.Icon {
 	iconURLs, iconsURLsFound, err := f.linksCache.GetIconURLs(u)
 	if err != nil {
@@ -124,6 +140,10 @@ func (f *fetcher) One(ctx context.Context, iconURL *url.URL) (domain.Icon, error
 	}
 
 	if !found {
+		if iconURL.Hostname() == domain.UploadedIconsHost {
+			return domain.Icon{}, fmt.Errorf("uploaded icon is not cached: %s", iconURL)
+		}
+
 		icons, err = f.scraper.DownloadIcons(ctx, []*url.URL{iconURL})
 		if err != nil {
 			return domain.Icon{}, fmt.Errorf("failed to download Icon: %w", err)

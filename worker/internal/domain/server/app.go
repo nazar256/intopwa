@@ -3,6 +3,7 @@ package server
 import (
 	"errors"
 	"fmt"
+	"github.com/nazar256/intopwa/internal/domain"
 	"log/slog"
 	"net/http"
 	"net/url"
@@ -46,27 +47,95 @@ func (s *server) handleApp(w http.ResponseWriter, req *http.Request) {
 		// Default handler: show info page with links to manifest and service worker
 
 		var iconURLs []*url.URL
+		var uploadedIcon *domainIconUpload
 		if req.Method == http.MethodPost {
-			err = req.ParseForm()
+			iconURLs, uploadedIcon, err = s.parseCreateAppIconSources(w, req)
 			if err != nil {
-				slog.Error("failed to parse form", "err", err)
-				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+				if validationErr, ok := err.(uploadedIconValidationError); ok {
+					http.Error(w, validationErr.Error(), http.StatusBadRequest)
+					return
+				}
+
+				slog.Error("failed to parse icon sources", "err", err)
+				http.Error(w, "Invalid icon upload", http.StatusBadRequest)
 				return
 			}
-			for _, iconURLStr := range req.Form["icons[]"] {
-				if !strings.HasPrefix(iconURLStr, "http://") && !strings.HasPrefix(iconURLStr, "https://") {
-					iconURLStr = "https://" + iconURLStr
-				}
-				iconURL, err := url.Parse(iconURLStr)
+
+			if uploadedIcon != nil {
+				err = s.iconsFetcher.StoreUploadedIcon(ctx, &appU.URL, uploadedIcon.icon)
 				if err != nil {
-					slog.Error("failed to parse icon URL", "err", err)
-					continue
+					slog.Error("failed to store uploaded icon", "err", err)
+					http.Error(w, "Failed to store uploaded icon", http.StatusInternalServerError)
+					return
 				}
-				iconURLs = append(iconURLs, iconURL)
 			}
 		}
 		s.handleAppRoot(ctx, w, appU, iconURLs)
 	}
+}
+
+type domainIconUpload struct {
+	icon domain.Icon
+}
+
+func (s *server) parseCreateAppIconSources(w http.ResponseWriter, req *http.Request) ([]*url.URL, *domainIconUpload, error) {
+	if strings.HasPrefix(req.Header.Get("Content-Type"), "multipart/form-data") {
+		req.Body = http.MaxBytesReader(w, req.Body, maxUploadedIconRequestBody)
+		if err := req.ParseMultipartForm(maxUploadedIconRequestBody); err != nil {
+			return nil, nil, uploadedIconValidationError{message: "Uploaded icon request is too large or malformed."}
+		}
+
+		iconURLs, err := parseIconURLValues(req.MultipartForm.Value["icons[]"])
+		if err != nil {
+			return nil, nil, err
+		}
+
+		file, header, err := req.FormFile(uploadedIconFormField)
+		if err != nil {
+			if errors.Is(err, http.ErrMissingFile) {
+				return iconURLs, nil, nil
+			}
+			return nil, nil, err
+		}
+		defer file.Close()
+
+		if len(iconURLs) > 0 {
+			return nil, nil, uploadedIconValidationError{message: "Choose either icon URLs or one uploaded icon file, not both."}
+		}
+
+		icon, err := readUploadedIcon(file, header)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		return nil, &domainIconUpload{icon: icon}, nil
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, nil, err
+	}
+
+	iconURLs, err := parseIconURLValues(req.Form["icons[]"])
+	return iconURLs, nil, err
+}
+
+func parseIconURLValues(values []string) ([]*url.URL, error) {
+	iconURLs := make([]*url.URL, 0, len(values))
+	for _, iconURLStr := range values {
+		iconURLStr = strings.TrimSpace(iconURLStr)
+		if iconURLStr == "" {
+			continue
+		}
+		if !strings.HasPrefix(iconURLStr, "http://") && !strings.HasPrefix(iconURLStr, "https://") {
+			iconURLStr = "https://" + iconURLStr
+		}
+		iconURL, err := url.Parse(iconURLStr)
+		if err != nil {
+			return nil, uploadedIconValidationError{message: "Invalid icon URL."}
+		}
+		iconURLs = append(iconURLs, iconURL)
+	}
+	return iconURLs, nil
 }
 func parseAppURL(u *url.URL) (*appURL, error) {
 	urlPath := u.Path

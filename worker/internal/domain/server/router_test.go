@@ -1,10 +1,12 @@
 package server
 
 import (
+	"bytes"
 	"github.com/nazar256/intopwa/internal/domain"
 	"github.com/nazar256/intopwa/internal/domain/server/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -150,4 +152,81 @@ func TestRouter(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestRouterUploadsIconFileForApp(t *testing.T) {
+	var body bytes.Buffer
+	writer := multipart.NewWriter(&body)
+	part, err := writer.CreateFormFile(uploadedIconFormField, "icon.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = part.Write(tinyPNG)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := writer.Close(); err != nil {
+		t.Fatal(err)
+	}
+
+	appU, _ := url.Parse("https://example.com")
+	expectedIcon, err := readUploadedIcon(readSeekCloser{Reader: bytes.NewReader(tinyPNG)}, &multipart.FileHeader{
+		Filename: "icon.png",
+		Size:     int64(len(tinyPNG)),
+		Header:   map[string][]string{"Content-Type": []string{"image/png"}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	iconsFetcherMock := mocks.NewIconsFetcher(t)
+	iconsFetcherMock.EXPECT().StoreUploadedIcon(mock.Anything, appU, mock.MatchedBy(func(icon domain.Icon) bool {
+		return icon.URL.String() == expectedIcon.URL.String() && icon.Props.MimeType == "image/png" && icon.Props.Size.String() == "1x1"
+	})).Return(nil).Once()
+	iconsFetcherMock.EXPECT().CacheIcons(mock.Anything, appU, []*url.URL(nil)).Return(nil).Once()
+	iconsFetcherMock.EXPECT().FetchIcons(mock.Anything, appU).Return([]domain.Icon{expectedIcon}).Once()
+
+	req, err := http.NewRequest(http.MethodPost, "/a/example.com", &body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	rr := httptest.NewRecorder()
+	New(iconsFetcherMock).Router().ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+	assert.Equal(t, "text/html", rr.Header().Get("Content-Type"))
+	assert.Contains(t, rr.Body.String(), "/i/"+domain.UploadedIconsHost+expectedIcon.URL.Path)
+}
+
+func TestRouterRejectsAmbiguousUploadedAndURLIcons(t *testing.T) {
+	var body bytes.Buffer
+	writer := multipart.NewWriter(&body)
+	if err := writer.WriteField("icons[]", "https://example.com/icon.png"); err != nil {
+		t.Fatal(err)
+	}
+	part, err := writer.CreateFormFile(uploadedIconFormField, "icon.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = part.Write(tinyPNG)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := writer.Close(); err != nil {
+		t.Fatal(err)
+	}
+
+	req, err := http.NewRequest(http.MethodPost, "/a/example.com", &body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	rr := httptest.NewRecorder()
+	New(mocks.NewIconsFetcher(t)).Router().ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusBadRequest, rr.Code)
+	assert.Contains(t, rr.Body.String(), "Choose either icon URLs or one uploaded icon file")
 }

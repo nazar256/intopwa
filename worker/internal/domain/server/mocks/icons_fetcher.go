@@ -178,6 +178,54 @@ func (_c *IconsFetcher_One_Call) RunAndReturn(run func(context.Context, *url.URL
 	return _c
 }
 
+// StoreUploadedIcon provides a mock function with given fields: ctx, pageURL, icon
+func (_m *IconsFetcher) StoreUploadedIcon(ctx context.Context, pageURL *url.URL, icon domain.Icon) error {
+	ret := _m.Called(ctx, pageURL, icon)
+
+	if len(ret) == 0 {
+		panic("no return value specified for StoreUploadedIcon")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, *url.URL, domain.Icon) error); ok {
+		r0 = rf(ctx, pageURL, icon)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// IconsFetcher_StoreUploadedIcon_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'StoreUploadedIcon'
+type IconsFetcher_StoreUploadedIcon_Call struct {
+	*mock.Call
+}
+
+// StoreUploadedIcon is a helper method to define mock.On call
+//   - ctx context.Context
+//   - pageURL *url.URL
+//   - icon domain.Icon
+func (_e *IconsFetcher_Expecter) StoreUploadedIcon(ctx interface{}, pageURL interface{}, icon interface{}) *IconsFetcher_StoreUploadedIcon_Call {
+	return &IconsFetcher_StoreUploadedIcon_Call{Call: _e.mock.On("StoreUploadedIcon", ctx, pageURL, icon)}
+}
+
+func (_c *IconsFetcher_StoreUploadedIcon_Call) Run(run func(ctx context.Context, pageURL *url.URL, icon domain.Icon)) *IconsFetcher_StoreUploadedIcon_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*url.URL), args[2].(domain.Icon))
+	})
+	return _c
+}
+
+func (_c *IconsFetcher_StoreUploadedIcon_Call) Return(_a0 error) *IconsFetcher_StoreUploadedIcon_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *IconsFetcher_StoreUploadedIcon_Call) RunAndReturn(run func(context.Context, *url.URL, domain.Icon) error) *IconsFetcher_StoreUploadedIcon_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // NewIconsFetcher creates a new instance of IconsFetcher. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewIconsFetcher(t interface {

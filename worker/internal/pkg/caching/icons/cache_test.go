@@ -40,7 +40,7 @@ func TestCache_Get(t *testing.T) {
 					Body: []byte("a"),
 					Props: domain.ImageProps{
 						MimeType: "image/x-icon",
-						Size:     domain.ImageSize{64, 64},
+						Size:     domain.ImageSize{Width: 64, Height: 64},
 					},
 				},
 			},
@@ -101,7 +101,7 @@ func TestCache_Store(t *testing.T) {
 					Body: []byte("a"),
 					Props: domain.ImageProps{
 						MimeType: "image/x-icon",
-						Size:     domain.ImageSize{64, 64},
+						Size:     domain.ImageSize{Width: 64, Height: 64},
 					},
 				},
 			},

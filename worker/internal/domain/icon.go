@@ -6,6 +6,12 @@ import (
 	"strings"
 )
 
+// UploadedIconsHost is the synthetic host used for icon URLs that reference
+// uploaded icon files stored in the worker's KV icon cache. These URLs never
+// resolve over the network; they are served by the worker's /i/ endpoint from
+// cache only.
+const UploadedIconsHost = "uploaded-icons.intopwa.local"
+
 type Icon struct {
 	URL   *url.URL
 	Body  []byte

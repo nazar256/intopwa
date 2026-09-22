@@ -70,3 +70,5 @@ node_modules/
 
 # other
 .idea
+# agent/session temp artifacts
+.tmp/

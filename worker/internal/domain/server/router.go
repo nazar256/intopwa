@@ -13,6 +13,7 @@ type iconsFetcher interface {
 	CacheIcons(ctx context.Context, pageURL *url.URL, iconURLs []*url.URL) error
 	FetchIcons(ctx context.Context, u *url.URL) []domain.Icon
 	One(ctx context.Context, iconURL *url.URL) (domain.Icon, error)
+	StoreUploadedIcon(ctx context.Context, pageURL *url.URL, icon domain.Icon) error
 }
 
 type server struct {
